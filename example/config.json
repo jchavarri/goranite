@@ -1,0 +1,16 @@
+{
+  "site": {
+    "title": "Goranite Example Site",
+    "description": "A demo site showcasing Goranite static site generator capabilities.",
+    "author": "Goranite",
+    "url": "https://example.com"
+  },
+  "build": {
+    "output_dir": "public",
+    "posts_per_page": 10
+  },
+  "social": {
+    "twitter": "@example",
+    "github": "example"
+  }
+} 
