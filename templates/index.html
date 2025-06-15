@@ -19,8 +19,13 @@
 <body>
     <div class="container">
         <header>
-            <h1><a href="/">{{.SiteTitle}}</a></h1>
-            <p>{{.SiteDescription}}</p>
+            <div class="header-top">
+                <h1><a href="/">{{.SiteTitle}}</a></h1>
+                <nav>
+                    <a href="/about/">About</a>
+                </nav>
+            </div>
+            {{.SiteDescription}}
         </header>
         
         <main>

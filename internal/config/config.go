@@ -54,13 +54,14 @@ func LoadConfig(path string) (*Config, error) {
 
 type TemplateData struct {
 	SiteTitle       string
-	SiteDescription string
+	SiteDescription template.HTML
 	Author          string
 	Year            int
 	Title           string
 	Description     string
 	Posts           []Post
 	Post            *Post
+	Page            *Page
 }
 
 type Post struct {
@@ -74,10 +75,18 @@ type Post struct {
 	Slug        string
 }
 
+type Page struct {
+	Title    string
+	Content  template.HTML
+	URL      string
+	Slug     string
+	Template string // Which template to use (e.g., "about.html", "contact.html")
+}
+
 func NewTemplateData(config *Config) *TemplateData {
 	return &TemplateData{
 		SiteTitle:       config.Site.Title,
-		SiteDescription: config.Site.Description,
+		SiteDescription: template.HTML(config.Site.Description),
 		Author:          config.Site.Author,
 		Year:            time.Now().Year(),
 	}

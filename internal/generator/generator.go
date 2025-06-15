@@ -49,6 +49,16 @@ func (g *Generator) Build(contentDir, staticDir, outputDir string) error {
 		return fmt.Errorf("failed to load posts: %w", err)
 	}
 
+	// Load pages
+	pages, err := content.LoadPages(filepath.Join(contentDir, "pages"))
+	if err != nil {
+		// Pages directory is optional, so don't fail if it doesn't exist
+		if !os.IsNotExist(err) {
+			return fmt.Errorf("failed to load pages: %w", err)
+		}
+		pages = []config.Page{} // Empty slice if no pages directory
+	}
+
 	// Generate index page
 	if err := g.generateIndex(posts, outputDir); err != nil {
 		return fmt.Errorf("failed to generate index: %w", err)
@@ -58,6 +68,13 @@ func (g *Generator) Build(contentDir, staticDir, outputDir string) error {
 	for _, post := range posts {
 		if err := g.generatePost(&post, outputDir); err != nil {
 			return fmt.Errorf("failed to generate post %s: %w", post.Title, err)
+		}
+	}
+
+	// Generate individual pages
+	for _, page := range pages {
+		if err := g.generatePage(&page, outputDir); err != nil {
+			return fmt.Errorf("failed to generate page %s: %w", page.Title, err)
 		}
 	}
 
@@ -96,6 +113,27 @@ func (g *Generator) generatePost(post *config.Post, outputDir string) error {
 	defer file.Close()
 
 	return g.templates.ExecuteTemplate(file, "post.html", data)
+}
+
+func (g *Generator) generatePage(page *config.Page, outputDir string) error {
+	data := config.NewTemplateData(g.config)
+	data.Page = page
+	data.Title = page.Title
+	data.Description = "" // Pages don't have summaries like posts do
+
+	// Create page directory
+	pageDir := filepath.Join(outputDir, page.Slug)
+	if err := os.MkdirAll(pageDir, 0755); err != nil {
+		return err
+	}
+
+	file, err := os.Create(filepath.Join(pageDir, "index.html"))
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	return g.templates.ExecuteTemplate(file, page.Template, data)
 }
 
 func (g *Generator) copyStaticFiles(staticDir, outputDir string) error {
