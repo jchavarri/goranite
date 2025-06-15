@@ -55,7 +55,9 @@ func LoadConfig(path string) (*Config, error) {
 type TemplateData struct {
 	SiteTitle       string
 	SiteDescription template.HTML
+	SiteURL         string
 	Author          string
+	TwitterHandle   string
 	Year            int
 	Title           string
 	Description     string
@@ -69,6 +71,7 @@ type Post struct {
 	Date        time.Time
 	Tags        []string
 	Summary     string
+	Image       string        `json:"image"` // Featured image for social sharing
 	Content     template.HTML `json:"content"`
 	URL         string
 	ReadingTime int
@@ -87,7 +90,9 @@ func NewTemplateData(config *Config) *TemplateData {
 	return &TemplateData{
 		SiteTitle:       config.Site.Title,
 		SiteDescription: template.HTML(config.Site.Description),
+		SiteURL:         config.Site.URL,
 		Author:          config.Site.Author,
+		TwitterHandle:   config.Social.Twitter,
 		Year:            time.Now().Year(),
 	}
 }

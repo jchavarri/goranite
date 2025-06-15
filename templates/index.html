@@ -5,7 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{.SiteTitle}}</title>
     <meta name="description" content="{{.SiteDescription}}">
+    <meta name="author" content="{{.Author}}">
     
+    <!-- Canonical URL -->
+    <link rel="canonical" href="{{.SiteURL}}/">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:url" content="{{.SiteURL}}/">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{{.SiteTitle}}">
+    <meta property="og:description" content="{{.SiteDescription}}">
+    <meta property="og:site_name" content="{{.SiteTitle}}">
+    <meta property="og:locale" content="en">
+    <meta property="og:image" content="{{.SiteURL}}/images/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    {{if .TwitterHandle}}
+    <meta name="twitter:site" content="{{.TwitterHandle}}">
+    <meta name="twitter:creator" content="{{.TwitterHandle}}">
+    {{end}}
+    <meta name="twitter:title" content="{{.SiteTitle}}">
+    <meta name="twitter:description" content="{{.SiteDescription}}">
+    <meta name="twitter:image" content="{{.SiteURL}}/images/og-image.png">
+    
+    <!-- Additional SEO Meta Tags -->
+    <meta name="robots" content="index, follow">
+    <meta name="googlebot" content="index, follow">
+
     <!-- Favicons -->
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -15,6 +44,25 @@
     <!-- Stylesheets -->
     <link rel="stylesheet" href="/css/chroma.css">
     <link rel="stylesheet" href="/css/custom.css">
+    
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "{{.SiteTitle}}",
+        "description": "{{.SiteDescription}}",
+        "url": "{{.SiteURL}}",
+        "author": {
+            "@type": "Person",
+            "name": "{{.Author}}"
+        },
+        "publisher": {
+            "@type": "Person",
+            "name": "{{.Author}}"
+        }
+    }
+    </script>
 </head>
 <body>
     <div class="container">

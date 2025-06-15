@@ -5,7 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{.Post.Title}} - {{.SiteTitle}}</title>
     <meta name="description" content="{{.Post.Summary}}">
+    <meta name="author" content="{{.Author}}">
     
+    <!-- Canonical URL -->
+    <link rel="canonical" href="{{.SiteURL}}/{{.Post.Slug}}/">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:url" content="{{.SiteURL}}/{{.Post.Slug}}/">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="{{.Post.Title}}">
+    <meta property="og:description" content="{{.Post.Summary}}">
+    <meta property="og:site_name" content="{{.SiteTitle}}">
+    <meta property="og:locale" content="en">
+    {{if .Post.Image}}
+    <meta property="og:image" content="{{.SiteURL}}{{.Post.Image}}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    {{end}}
+    
+    <!-- Article specific Open Graph -->
+    <meta property="article:author" content="{{.Author}}">
+    <meta property="article:published_time" content="{{.Post.Date.Format "2006-01-02T15:04:05Z07:00"}}">
+    {{range .Post.Tags}}
+    <meta property="article:tag" content="{{.}}">
+    {{end}}
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    {{if .TwitterHandle}}
+    <meta name="twitter:site" content="{{.TwitterHandle}}">
+    <meta name="twitter:creator" content="{{.TwitterHandle}}">
+    {{end}}
+    <meta name="twitter:title" content="{{.Post.Title}}">
+    <meta name="twitter:description" content="{{.Post.Summary}}">
+    {{if .Post.Image}}
+    <meta name="twitter:image" content="{{.SiteURL}}{{.Post.Image}}">
+    {{end}}
+    
+    <!-- Additional SEO Meta Tags -->
+    <meta name="robots" content="index, follow">
+    <meta name="googlebot" content="index, follow">
+
     <!-- Favicons -->
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -15,6 +55,36 @@
     <!-- Stylesheets -->
     <link rel="stylesheet" href="/css/chroma.css">
     <link rel="stylesheet" href="/css/custom.css">
+    
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "{{.Post.Title}}",
+        "description": "{{.Post.Summary}}",
+        "author": {
+            "@type": "Person",
+            "name": "{{.Author}}"
+        },
+        "publisher": {
+            "@type": "Person",
+            "name": "{{.Author}}"
+        },
+        "datePublished": "{{.Post.Date.Format "2006-01-02T15:04:05Z07:00"}}",
+        "dateModified": "{{.Post.Date.Format "2006-01-02T15:04:05Z07:00"}}",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "{{.SiteURL}}/{{.Post.Slug}}/"
+        }{{if .Post.Image}},
+        "image": {
+            "@type": "ImageObject",
+            "url": "{{.SiteURL}}{{.Post.Image}}",
+            "width": 1200,
+            "height": 630
+        }{{end}}
+    }
+    </script>
 </head>
 <body>
     <div class="container">

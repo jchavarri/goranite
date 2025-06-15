@@ -11,12 +11,13 @@
 - [x] Nord theme (light/dark)
 
 ## 🚧 Next
+- [ ] Deploy to Cloudflare Pages
+- [ ] Compare old and new htmls
 - [ ] RSS feed
 - [ ] Sitemap
 - [ ] Site scaffolding/creation command
 - [ ] Add new post
 - [ ] Custom HTML templates
-- [ ] Deploy to Cloudflare Pages
 
 ## 💡 Ideas
 - [ ] Search

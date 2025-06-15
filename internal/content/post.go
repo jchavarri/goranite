@@ -31,6 +31,7 @@ type PostMatter struct {
 	Date    time.Time `json:"date"`
 	Tags    []string  `json:"tags"`
 	Summary string    `json:"summary"`
+	Image   string    `json:"image"`
 }
 
 // Nord-Light custom style definition
@@ -297,6 +298,7 @@ func LoadPost(path string) (*config.Post, error) {
 		Date:        matter.Date,
 		Tags:        matter.Tags,
 		Summary:     matter.Summary,
+		Image:       matter.Image,
 		Content:     template.HTML(htmlContent),
 		URL:         "/" + slug + "/",
 		ReadingTime: readingTime,

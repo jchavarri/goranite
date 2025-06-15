@@ -4,8 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{.Page.Title}} - {{.SiteTitle}}</title>
-    <meta name="description" content="{{.Description}}">
+    <meta name="description" content="{{if .Description}}{{.Description}}{{else}}{{.Page.Title}} - {{.SiteDescription}}{{end}}">
+    <meta name="author" content="{{.Author}}">
     
+    <!-- Canonical URL -->
+    <link rel="canonical" href="{{.SiteURL}}/{{.Page.Slug}}/">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:url" content="{{.SiteURL}}/{{.Page.Slug}}/">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{{.Page.Title}} - {{.SiteTitle}}">
+    <meta property="og:description" content="{{if .Description}}{{.Description}}{{else}}{{.Page.Title}} - {{.SiteDescription}}{{end}}">
+    <meta property="og:site_name" content="{{.SiteTitle}}">
+    <meta property="og:locale" content="en">
+    <meta property="og:image" content="{{.SiteURL}}/images/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    {{if .TwitterHandle}}
+    <meta name="twitter:site" content="{{.TwitterHandle}}">
+    <meta name="twitter:creator" content="{{.TwitterHandle}}">
+    {{end}}
+    <meta name="twitter:title" content="{{.Page.Title}} - {{.SiteTitle}}">
+    <meta name="twitter:description" content="{{if .Description}}{{.Description}}{{else}}{{.Page.Title}} - {{.SiteDescription}}{{end}}">
+    <meta name="twitter:image" content="{{.SiteURL}}/images/og-image.png">
+    
+    <!-- Additional SEO Meta Tags -->
+    <meta name="robots" content="index, follow">
+    <meta name="googlebot" content="index, follow">
+
     <!-- Favicons -->
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -15,6 +44,21 @@
     <!-- Stylesheets -->
     <link rel="stylesheet" href="/css/chroma.css">
     <link rel="stylesheet" href="/css/custom.css">
+    
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "{{.Page.Title}}",
+        "description": "{{if .Description}}{{.Description}}{{else}}{{.Page.Title}} - {{.SiteDescription}}{{end}}",
+        "url": "{{.SiteURL}}/{{.Page.Slug}}/",
+        "author": {
+            "@type": "Person",
+            "name": "{{.Author}}"
+        }
+    }
+    </script>
 </head>
 <body>
     <div class="container">
