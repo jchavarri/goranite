@@ -16,7 +16,7 @@ A minimal, fast static site generator built with Go. Solid as granite, powered b
 1. **Install Go** (1.21+)
 2. **Clone and build:**
    ```bash
-   git clone https://github.com/javierchavarri/goranite
+   git clone https://github.com/jchavarri/goranite
    cd goranite
    go build -o goranite
    ```

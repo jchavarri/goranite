@@ -75,7 +75,7 @@ echo "Build complete!"
 
 ## Links
 
-Check out the [Goranite repository](https://github.com/javierchavarri/goranite) for more information.
+Check out the [Goranite repository](https://github.com/jchavarri/goranite) for more information.
 
 ## Tables
 
