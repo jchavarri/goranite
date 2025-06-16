@@ -1,6 +1,6 @@
 module github.com/javierchavarri/goranite
 
-go 1.24.3
+go 1.21
 
 require (
 	github.com/alecthomas/chroma v0.10.0

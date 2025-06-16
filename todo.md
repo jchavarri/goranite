@@ -18,6 +18,7 @@
 - [ ] Site scaffolding/creation command
 - [ ] Add new post
 - [ ] Custom HTML templates
+- [ ] Posts Pagination
 
 ## 💡 Ideas
 - [ ] Search
