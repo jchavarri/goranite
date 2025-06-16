@@ -19,8 +19,9 @@ import (
 )
 
 type PageMatter struct {
-	Title    string `json:"title"`
-	Template string `json:"template"` // Which template to use (defaults to "page.html")
+	Title       string `json:"title"`
+	Description string `json:"description"` // Meta description for SEO
+	Template    string `json:"template"`    // Which template to use (defaults to "page.html")
 }
 
 func LoadPage(path string) (*config.Page, error) {
@@ -86,11 +87,12 @@ func LoadPage(path string) (*config.Page, error) {
 	slug := strings.TrimSuffix(filename, ".md")
 
 	return &config.Page{
-		Title:    matter.Title,
-		Content:  template.HTML(htmlContent),
-		URL:      "/" + slug + "/",
-		Slug:     slug,
-		Template: matter.Template,
+		Title:       matter.Title,
+		Description: matter.Description,
+		Content:     template.HTML(htmlContent),
+		URL:         "/" + slug + "/",
+		Slug:        slug,
+		Template:    matter.Template,
 	}, nil
 }
 

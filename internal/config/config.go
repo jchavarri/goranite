@@ -79,11 +79,12 @@ type Post struct {
 }
 
 type Page struct {
-	Title    string
-	Content  template.HTML
-	URL      string
-	Slug     string
-	Template string // Which template to use (e.g., "about.html", "contact.html")
+	Title       string
+	Description string // Meta description for SEO
+	Content     template.HTML
+	URL         string
+	Slug        string
+	Template    string // Which template to use (e.g., "about.html", "contact.html")
 }
 
 func NewTemplateData(config *Config) *TemplateData {

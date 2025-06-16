@@ -162,7 +162,7 @@ func (g *Generator) generatePage(page *config.Page, outputDir string) error {
 	data := config.NewTemplateData(g.config)
 	data.Page = page
 	data.Title = page.Title
-	data.Description = "" // Pages don't have summaries like posts do
+	data.Description = page.Description // Use page's description if available
 
 	// Create page directory
 	pageDir := filepath.Join(outputDir, page.Slug)
