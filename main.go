@@ -61,7 +61,12 @@ func buildSite(siteDir string) error {
 	contentDir := filepath.Join(siteDir, "content")
 	staticDir := filepath.Join(siteDir, "static")
 	outputDir := filepath.Join(siteDir, "public")
-	templatesDir := "templates"
+
+	// Find templates directory relative to executable
+	templatesDir, err := getTemplatesDir()
+	if err != nil {
+		return fmt.Errorf("failed to find templates directory: %w", err)
+	}
 
 	// Clean output directory first
 	fmt.Println("🧹 Cleaning output directory...")
@@ -120,7 +125,13 @@ func serveSite(siteDir string) error {
 func watchAndRebuild(siteDir string) {
 	contentDir := filepath.Join(siteDir, "content")
 	configFile := filepath.Join(siteDir, "config.json")
-	templatesDir := "templates"
+
+	// Get templates directory dynamically
+	templatesDir, err := getTemplatesDir()
+	if err != nil {
+		fmt.Printf("❌ Warning: Could not find templates directory for watching: %v\n", err)
+		templatesDir = "templates" // fallback
+	}
 
 	// Get initial modification times
 	lastMod := getLastModTime(contentDir, configFile, templatesDir)
@@ -170,4 +181,29 @@ func createNewPost(title string) error {
 	// TODO: Implement post creation
 	fmt.Printf("Creating post '%s'... (not implemented yet)\n", title)
 	return nil
+}
+
+func getTemplatesDir() (string, error) {
+	// Get the path of the current executable
+	execPath, err := os.Executable()
+	if err != nil {
+		return "", fmt.Errorf("failed to get executable path: %w", err)
+	}
+
+	// Get the directory containing the executable
+	execDir := filepath.Dir(execPath)
+
+	// Try templates relative to executable first
+	templatesDir := filepath.Join(execDir, "templates")
+	if _, err := os.Stat(templatesDir); err == nil {
+		return templatesDir, nil
+	}
+
+	// Fallback to current working directory (for development)
+	templatesDir = "templates"
+	if _, err := os.Stat(templatesDir); err == nil {
+		return templatesDir, nil
+	}
+
+	return "", fmt.Errorf("templates directory not found")
 }
