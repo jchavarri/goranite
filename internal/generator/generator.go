@@ -1,8 +1,10 @@
 package generator
 
 import (
+	"embed"
 	"fmt"
 	"html/template"
+	"io/fs"
 	"os"
 	"path/filepath"
 
@@ -24,6 +26,47 @@ func New(configPath, templatesDir string) (*Generator, error) {
 	tmpl, err := template.ParseGlob(filepath.Join(templatesDir, "*.html"))
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse templates: %w", err)
+	}
+
+	return &Generator{
+		config:    cfg,
+		templates: tmpl,
+	}, nil
+}
+
+func NewWithEmbedded(configPath string, embeddedFS embed.FS) (*Generator, error) {
+	cfg, err := config.LoadConfig(configPath)
+	if err != nil {
+		return nil, fmt.Errorf("failed to load config: %w", err)
+	}
+
+	tmpl := template.New("")
+
+	// Read all .html files from the embedded filesystem
+	err = fs.WalkDir(embeddedFS, ".", func(path string, d fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+
+		if !d.IsDir() && filepath.Ext(path) == ".html" {
+			content, err := embeddedFS.ReadFile(path)
+			if err != nil {
+				return err
+			}
+
+			// Use just the filename as the template name
+			templateName := filepath.Base(path)
+			_, err = tmpl.New(templateName).Parse(string(content))
+			if err != nil {
+				return fmt.Errorf("failed to parse template %s: %w", path, err)
+			}
+		}
+
+		return nil
+	})
+
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse embedded templates: %w", err)
 	}
 
 	return &Generator{

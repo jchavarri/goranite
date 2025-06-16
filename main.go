@@ -1,6 +1,7 @@
 package main
 
 import (
+	"embed"
 	"flag"
 	"fmt"
 	"log"
@@ -12,6 +13,9 @@ import (
 	"github.com/jchavarri/goranite/internal/content"
 	"github.com/jchavarri/goranite/internal/generator"
 )
+
+//go:embed templates/*.html
+var embeddedTemplates embed.FS
 
 func main() {
 	var (
@@ -62,21 +66,25 @@ func buildSite(siteDir string) error {
 	staticDir := filepath.Join(siteDir, "static")
 	outputDir := filepath.Join(siteDir, "public")
 
-	// Find templates directory relative to executable
-	templatesDir, err := getTemplatesDir()
-	if err != nil {
-		return fmt.Errorf("failed to find templates directory: %w", err)
-	}
-
 	// Clean output directory first
 	fmt.Println("🧹 Cleaning output directory...")
 	if err := os.RemoveAll(outputDir); err != nil && !os.IsNotExist(err) {
 		return fmt.Errorf("failed to clean output directory: %w", err)
 	}
 
-	gen, err := generator.New(configPath, templatesDir)
+	// Try to use embedded templates first
+	gen, err := generator.NewWithEmbedded(configPath, embeddedTemplates)
 	if err != nil {
-		return err
+		// Fall back to filesystem templates
+		templatesDir, err := getTemplatesDir()
+		if err != nil {
+			return fmt.Errorf("failed to find templates directory: %w", err)
+		}
+
+		gen, err = generator.New(configPath, templatesDir)
+		if err != nil {
+			return err
+		}
 	}
 
 	// Build the site first
@@ -184,6 +192,12 @@ func createNewPost(title string) error {
 }
 
 func getTemplatesDir() (string, error) {
+	// First, try templates in current working directory (most common case)
+	templatesDir := "templates"
+	if _, err := os.Stat(templatesDir); err == nil {
+		return templatesDir, nil
+	}
+
 	// Get the path of the current executable
 	execPath, err := os.Executable()
 	if err != nil {
@@ -193,17 +207,11 @@ func getTemplatesDir() (string, error) {
 	// Get the directory containing the executable
 	execDir := filepath.Dir(execPath)
 
-	// Try templates relative to executable first
-	templatesDir := filepath.Join(execDir, "templates")
+	// Try templates relative to executable
+	templatesDir = filepath.Join(execDir, "templates")
 	if _, err := os.Stat(templatesDir); err == nil {
 		return templatesDir, nil
 	}
 
-	// Fallback to current working directory (for development)
-	templatesDir = "templates"
-	if _, err := os.Stat(templatesDir); err == nil {
-		return templatesDir, nil
-	}
-
-	return "", fmt.Errorf("templates directory not found")
+	return "", fmt.Errorf("templates directory not found in current directory or relative to executable")
 }

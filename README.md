@@ -13,73 +13,81 @@ A minimal, fast static site generator built with Go. Solid as granite, powered b
 
 ## Quick Start
 
-1. **Install Go** (1.21+)
-2. **Clone and build:**
-   ```bash
-   git clone https://github.com/jchavarri/goranite
-   cd goranite
-   go build -o goranite
-   ```
+### Option 1: Install from GitHub (Recommended)
 
-3. **Create your site:**
-   ```bash
-   mkdir mysite
-   cd mysite
-   
-   # Create config
-   cat > config.json << EOF
-   {
-     "site": {
-       "title": "My Blog",
-       "description": "My awesome blog",
-       "author": "Your Name",
-       "url": "https://myblog.com"
-     },
-     "build": {
-       "output_dir": "public",
-       "posts_per_page": 10
-     }
-   }
-   EOF
-   
-   # Create directories
-   mkdir -p content/posts static/css static/images
-   
-   # Create custom CSS (or copy from example/ directory)
-   touch static/css/custom.css
-   
-   # Create first post
-   cat > content/posts/hello.md << EOF
-   ---
-   {
-     "title": "Hello World",
-     "date": "2024-01-15T00:00:00Z",
-     "tags": ["hello", "first-post"],
-     "summary": "My first post with Goranite"
-   }
-   ---
-   
-   # Hello World
-   
-   This is my first post with **Goranite**!
-   
-   ## Code Example
-   
-   \`\`\`go
-   func main() {
-       fmt.Println("Hello, Goranite!")
-   }
-   \`\`\`
-   
-   Pretty cool! 🪨
-   EOF
-   ```
+```bash
+go install github.com/jchavarri/goranite@latest
+```
 
-4. **Build and serve:**
-   ```bash
-   ./goranite -build
-   ./goranite -serve  # Visit http://localhost:8080
-   ```
+### Option 2: Build from Source
+
+```bash
+git clone https://github.com/jchavarri/goranite
+cd goranite
+go build -o goranite
+```
+
+### Create Your Site
+
+```bash
+mkdir mysite
+cd mysite
+
+# Create config
+cat > config.json << EOF
+{
+  "site": {
+    "title": "My Blog",
+    "description": "My awesome blog",
+    "author": "Your Name",
+    "url": "https://myblog.com"
+  },
+  "build": {
+    "output_dir": "public",
+    "posts_per_page": 10
+  }
+}
+EOF
+
+# Create directories
+mkdir -p content/posts static/css static/images
+
+# Create custom CSS (or copy from example/ directory)
+touch static/css/custom.css
+
+# Create first post
+cat > content/posts/hello.md << EOF
+---
+{
+  "title": "Hello World",
+  "date": "2024-01-15T00:00:00Z",
+  "tags": ["hello", "first-post"],
+  "summary": "My first post with Goranite"
+}
+---
+
+# Hello World
+
+This is my first post with **Goranite**!
+
+## Code Example
+
+\`\`\`go
+func main() {
+    fmt.Println("Hello, Goranite!")
+}
+\`\`\`
+
+Pretty cool! 🪨
+EOF
+```
+
+### Build and Serve
+
+```bash
+goranite -build
+goranite -serve  # Visit http://localhost:8080
+```
 
 ## Post Format
 
