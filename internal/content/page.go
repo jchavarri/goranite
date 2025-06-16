@@ -15,7 +15,7 @@ import (
 	goldmarkhtml "github.com/yuin/goldmark/renderer/html"
 	"github.com/yuin/goldmark/util"
 
-	"github.com/javierchavarri/goranite/internal/config"
+	"github.com/jchavarri/goranite/internal/config"
 )
 
 type PageMatter struct {

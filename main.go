@@ -9,8 +9,8 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/javierchavarri/goranite/internal/content"
-	"github.com/javierchavarri/goranite/internal/generator"
+	"github.com/jchavarri/goranite/internal/content"
+	"github.com/jchavarri/goranite/internal/generator"
 )
 
 func main() {

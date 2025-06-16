@@ -6,8 +6,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/javierchavarri/goranite/internal/config"
-	"github.com/javierchavarri/goranite/internal/content"
+	"github.com/jchavarri/goranite/internal/config"
+	"github.com/jchavarri/goranite/internal/content"
 )
 
 type Generator struct {

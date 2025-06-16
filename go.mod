@@ -1,4 +1,4 @@
-module github.com/javierchavarri/goranite
+module github.com/jchavarri/goranite
 
 go 1.21
 
